@@ -16,21 +16,21 @@ Red::~Red() {
 	pop = 0;
 }
 
-Red::Red(Red& const Red) {
-	Red.pop = pop;
-	if (pop == 0) Red.poc = Red.kraj = nullptr;
-	Ceo* tek = poc;
+Red::Red(Red& const Red) { 
+	pop = Red.pop;
+	if (pop == 0) poc = kraj = nullptr;
+	Ceo* tek = Red.poc;
 	while (tek != nullptr) {
-		if (pop == 0) Red.poc = poc;
-		Red.kraj =((pop<1)? Red.poc = new Ceo(tek->broj(), tek->sledeci()) : new Ceo(tek->broj(), tek->sledeci()));
+		kraj =((pop<1)? poc = new Ceo(tek->broj(), tek->sledeci()) : new Ceo(tek->broj(), tek->sledeci()));
+		tek = tek->sledeci();
 	}
 }
 
 Red::Red(Red&& Red) {
-	Red.pop = pop;
-	Red.poc = poc;
-	Red.kraj = kraj;
-	poc = kraj = nullptr;
+	pop = Red.pop;
+	poc = Red.poc;
+	kraj = Red.kraj;
+	Red.poc = Red.kraj = nullptr;
 }
 
 
@@ -55,7 +55,8 @@ int Red::uzmi() {
 void const Red::pisi() {
 	Ceo* tek = poc;
 	while (tek != nullptr) {
-		cout << tek->broj();
+		string c = ((tek->sledeci() != nullptr)? "->" : "\n");
+		cout << tek->broj(); cout << c;
 		tek = tek->sledeci();
 	}
 }
